@@ -1,5 +1,5 @@
 use Test;
-BEGIN { plan tests => 37 };
+BEGIN { plan tests => 39 };
 use strict;
 use Time::Local::Extended qw(:ALL);
 
@@ -49,6 +49,7 @@ my $new_last_timegm  = $new_last_timelocal + $gmt_offset;
 my $new_gmtime_limit = $new_limit_a        + $gmt_offset;
 my $random_time_1 = 3182043600;
 my $random_time_2 = 4023794096;
+my $summer_time   = 4026153599;
 
 ###########
 #         #
@@ -78,6 +79,7 @@ ok (timegm(7,14,3,19,0,138)    == $old_limit_a);
 ok (timegm(8,14,3,19,0,138)    == $old_limit_b);
 ok (timegm(0,0,5,1,10,170)     == $random_time_1);
 ok (timegm(59,59,23,31,11,197) == $new_last_timegm);
+ok (timegm(59,59,23,31,6,197)  == $summer_time);
 
 #
 # localtime
@@ -110,6 +112,8 @@ ok (scalar gmtime($old_limit_b)     eq 'Tue Jan 19 03:14:08 2038');
 
 ok (join ('|',gmtime($new_gmtime_limit)) eq '7|14|22|18|0|198|6|17|0');
 ok (scalar gmtime($new_gmtime_limit)     eq 'Sat Jan 18 22:14:07 2098');
+
+ok (scalar gmtime($summer_time) eq 'Wed Jul 31 23:59:59 2097');
 
 #
 # UNIX_TIMESTAMP

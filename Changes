@@ -1,6 +1,11 @@
 Revision history for Perl extension Time::Local::Extended.
 
-0.44  Sun Apr 04 22:30:00 2004 EST
+0.47  Sat Jun 26 18:00:00 2004 EDT
+
+     - Fix for daylight savings time, thanks to Vytautas Mickevicius.
+     - Updated copyright.
+
+0.44  Sun Apr 04 22:30:00 2004 EDT
 
      - Added exemption for non-Eastern time zones in t/export_tests.t
 

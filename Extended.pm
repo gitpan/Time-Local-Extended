@@ -1,6 +1,6 @@
 # Time::Local::Extended -- Extends 2038 barrier to 2098.
 # 
-# Copyright (C) 2003  Bob O'Neill.
+# Copyright (C) 2003-2004  Bob O'Neill.
 # All rights reserved.
 #
 # This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ use Time::Local qw();
                   UNIX_TIMESTAMP FROM_UNIXTIME);
 %EXPORT_TAGS = (ALL => [qw(timelocal localtime timegm gmtime
                 UNIX_TIMESTAMP FROM_UNIXTIME)] );
-$VERSION     = '0.44';
+$VERSION     = '0.47';
 local $^W    = 1;
 
 sub timelocal
@@ -174,14 +174,14 @@ sub localtime
 sub timegm
 {
     my $timelocal = &timelocal(@_);
-    my $timegm    = $timelocal + &diff_to_gmt();
+    my $timegm    = $timelocal + &diff_to_gmt(@_);
     return $timegm;
 }
 
 sub gmtime
 {
     my $gmtime    = shift;
-    my $localtime = $gmtime - &diff_to_gmt();
+    my $localtime = $gmtime - &diff_to_gmt(&localtime($gmtime));
     return &localtime($localtime)
 }
 
@@ -280,8 +280,12 @@ sub FROM_UNIXTIME
 
 sub diff_to_gmt
 {
-    my $localtime = Time::Local::timelocal(0,0,0,3,10,103);
-    my $gmtime    = Time::Local::timegm(0,0,0,3,10,103);
+    # Adjust year if necessary.
+    my @t = @_;
+    $t[5] -= 60 until $t[5] < 138;
+
+    my $localtime = Time::Local::timelocal(@t);
+    my $gmtime    = Time::Local::timegm(@t);
     my $gmt_diff  = ($gmtime - $localtime);
 
     return $gmt_diff;
@@ -388,7 +392,7 @@ Bob O'Neill, E<lt>bobo@cpan.orgE<gt>
  
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2003 Bob O'Neill.
+Copyright (C) 2003-2004 Bob O'Neill.
 All rights reserved.
 
 See COPYING for license
