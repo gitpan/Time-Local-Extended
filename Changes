@@ -1,5 +1,9 @@
 Revision history for Perl extension Time::Local::Extended.
 
+0.44  Sun Apr 04 22:30:00 2004 EST
+
+     - Added exemption for non-Eastern time zones in t/export_tests.t
+
 0.43  Sun Apr 04 20:00:00 2004 EST
 
      - Added support for specifying 4-digit years to timelocal.
