@@ -28,7 +28,7 @@ my $eastern_diff = $gmt_diff + 5;
 if ($eastern_diff)
 {
     warn "No tests for your time zone (yet).\n";
-    for (1..37)
+    for (1..39)
     {
         skip(1, 1);
     }

@@ -1,5 +1,9 @@
 Revision history for Perl extension Time::Local::Extended.
 
+0.48  Mon Jun 28 22:30:00 2004 EDT
+
+     - Fixed skip() in tests to agree with number of planned tests.
+
 0.47  Sat Jun 26 18:00:00 2004 EDT
 
      - Fix for daylight savings time, thanks to Vytautas Mickevicius.

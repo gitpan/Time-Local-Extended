@@ -28,7 +28,7 @@ use Time::Local qw();
                   UNIX_TIMESTAMP FROM_UNIXTIME);
 %EXPORT_TAGS = (ALL => [qw(timelocal localtime timegm gmtime
                 UNIX_TIMESTAMP FROM_UNIXTIME)] );
-$VERSION     = '0.47';
+$VERSION     = '0.48';
 local $^W    = 1;
 
 sub timelocal
