@@ -1,0 +1,15 @@
+Revision history for Perl extension Time::Local::Extended.
+
+0.41  Wed Nov 05 22:00:00 2003 EST
+
+     - Added support for dates up to 2098.
+     - Renamed distribution as Time::Local::Extended.
+     - Changed @EXPORT to be the same as @Time::Local::EXPORT.
+       Thanks to Michael Schwern for this advice.
+     - Documentation updated.
+     - Tests updated.
+     - Corrected weekday of first release in Changes file.
+
+0.33  Wed Nov 05 00:00:00 2003 EST
+     - initial release (as Time::Local::2074)
+

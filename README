@@ -1,0 +1,85 @@
+NAME
+    Time::Local::Extended - Extends 2038 barrier to 2098.
+
+SYNOPSIS
+      use Time::Local::Extended qw(:ALL);
+
+      my @localtime   = localtime(2**31);
+      my $seconds     = timelocal(0,0,0,1,10,170);
+      my $gmt_seconds = timegm(0,0,0,1,10,170);
+      my $gmt_time    = gmtime(2**31);
+      my $ux_time     = UNIX_TIMESTAMP('2097-07-04 12:34:56');
+      my $date        = FROM_UNIXTIME(2**31);
+
+      my $sql = qq(
+             SELECT start_time
+             FROM   projects
+             WHERE  project_id = '1'
+      );
+      my $date_time = $dbh->selectrow_array($sql); # '2097-07-04 12:34:56'
+      my $ux_time   = UNIX_TIMESTAMP($date_time);  # 4023794096
+
+      my $date_time = FROM_UNIXTIME(2**31);
+      my $sql  = qq(
+             UPDATE projects
+             SET    start_time = '$date_time'
+             WHERE  project_id = '1'
+      );
+
+DESCRIPTION
+    This module extends the 2038 date boundary to 2098. In conventional date
+    manipulation using CORE::localtime and Time::Local::timelocal, you
+    cannot use dates later than 2038. This module allows you to use dates as
+    far out as 2098, giving you sixty more years to postpone the problem.
+
+PUBLIC METHODS
+    * timelocal
+        Invoked in the same way as Time::Local::timelocal, but supports
+        dates up to Jan 1, 2098.
+
+    * localtime
+        Invoked in the same way as CORE::localtime, but supports dates up to
+        Jan 18, 2098.
+
+    * timegm
+        Invoked in the same way as Time::Local::timegm, but supports dates
+        up to Jan 1, 2098.
+
+    * gmtime
+        Invoked in the same way as CORE::gmtime, but supports dates up to
+        Jan 18, 2098.
+
+    * UNIX_TIMESTAMP
+        Invoked similarly to the MySQL UNIX_TIMESTAMP() function, but
+        supports dates up to Jan 1, 2098.
+
+    * FROM_UNIXTIME
+        Invoked similarly to the MySQL FROM_UNIXTIME() function, but
+        supports dates up to Jan 18, 2098.
+
+BUGS
+    Please e-mail bug reports or suggestions to bobo@cpan.org. Thanks!
+
+TODO
+      1) Trap Time::Local::timelocal die in an eval {}.
+      2) Add support for timelocal_nocheck and timegm_nocheck.
+      3) Add tests for time zones other than Eastern.
+      4) Clean up.  Lots of clean up.
+
+CREDITS
+    Thanks to Peter Kioko <ceph@techie.com> for helping to refine the idea.
+    Thanks to Adam Foxson <afoxson@pobox.com> for quality assurance and for
+    being the Human CPAN Reference Manual.
+
+AUTHOR
+    Bob O'Neill, <bobo@cpan.org>
+
+COPYRIGHT AND LICENSE
+    Copyright (C) 2003 Bob O'Neill. All rights reserved.
+
+    See COPYING for license
+
+SEE ALSO
+    * perl.
+    * Time::Local.
+

@@ -1,0 +1,10 @@
+COPYING
+Changes
+Extended.pm
+INSTALL
+MANIFEST
+MANIFEST.SKIP
+Makefile.PL
+README
+bin/example.pl
+t/all_tests.t
