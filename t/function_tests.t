@@ -1,5 +1,5 @@
 use Test;
-BEGIN { plan tests => 36 };
+BEGIN { plan tests => 37 };
 use strict;
 use Time::Local::Extended qw(:ALL);
 
@@ -9,8 +9,8 @@ local $^W = 1; # warnings on, compatible with old Perls
 # Testing of CORE:: and Time::Local::
 # modules can be turned on, but it is off by default.
 # Certain platforms behave differently.  If you turn
-# $RUN_ALL_TESTS = 1, update the number of tests to 54.
-# (from 36)
+# $RUN_ALL_TESTS = 1, update the number of tests to 55.
+# (from 37)
 #
 my $RUN_ALL_TESTS = 0;
 
@@ -28,7 +28,7 @@ my $eastern_diff = $gmt_diff + 5;
 if ($eastern_diff)
 {
     warn "No tests for your time zone (yet).\n";
-    for (1..36)
+    for (1..37)
     {
         skip(1, 1);
     }
@@ -59,12 +59,13 @@ my $random_time_2 = 4023794096;
 #
 # timelocal
 #
-ok (timelocal(59,59,23,31,11,137) == $old_last_timelocal);
-ok (timelocal(0,0,0,1,0,138)      == $old_last_timelocal + 1);
-ok (timelocal(7,14,22,18,0,138)   == $old_limit_a);
-ok (timelocal(8,14,22,18,0,138)   == $old_limit_b);
-ok (timelocal(0,0,0,1,10,170)     == $random_time_1);
-ok (timelocal(59,59,23,31,11,197) == $new_last_timelocal);
+ok (timelocal(59,59,23,31,11,137)  == $old_last_timelocal);
+ok (timelocal(0,0,0,1,0,138)       == $old_last_timelocal + 1);
+ok (timelocal(7,14,22,18,0,138)    == $old_limit_a);
+ok (timelocal(8,14,22,18,0,138)    == $old_limit_b);
+ok (timelocal(0,0,0,1,10,170)      == $random_time_1);
+ok (timelocal(59,59,23,31,11,197)  == $new_last_timelocal);
+ok (timelocal(59,59,23,31,11,2097) == $new_last_timelocal);
 
 #
 # timegm

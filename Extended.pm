@@ -23,17 +23,40 @@ use Carp qw(cluck);
 use Time::Local qw();
 
 @ISA         = qw(Exporter);
-@EXPORT      = qw(timegm timelocal);
+@EXPORT      = qw(timelocal localtime timegm gmtime);
 @EXPORT_OK   = qw(timelocal localtime timegm gmtime
-                UNIX_TIMESTAMP FROM_UNIXTIME);
+                  UNIX_TIMESTAMP FROM_UNIXTIME);
 %EXPORT_TAGS = (ALL => [qw(timelocal localtime timegm gmtime
                 UNIX_TIMESTAMP FROM_UNIXTIME)] );
-$VERSION     = '0.41';
+$VERSION     = '0.43';
 local $^W    = 1;
 
 sub timelocal
 {
     my @time_data = @_;
+
+    # Follow the Time::Local::timelocal conventions:
+    #
+    # 1) Treat years greater than 999 as the actual 4-digit year
+    #    (not an offset from 1900)
+    # 2) Treat years in the range 0..99 as years in the "current century"
+    #
+    my $year  = $time_data[5];
+    $time_data[5] -= 1900 if $year > 999;
+
+    if ($year >= 0 and $year <= 99)
+    {
+        my $current_year    = (CORE::localtime())[5] + 1900;
+        my $current_century = int ($current_year / 100) * 100;
+ 
+        my $break_point = $current_year + 50;
+           $current_century += 100 if ($break_point % 100) < 50;
+
+        my $adjusted_year  = $current_century + $year;
+           $adjusted_year -= 100 if ($year + $current_century) > $break_point;
+
+        $time_data[5] = $adjusted_year - 1900;
+    }
 
     my $can_adjust = ($time_data[5] >= 198) ? 0 : 1;
     if (not $can_adjust)

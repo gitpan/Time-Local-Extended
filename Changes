@@ -1,5 +1,15 @@
 Revision history for Perl extension Time::Local::Extended.
 
+0.43  Sun Apr 04 20:00:00 2004 EST
+
+     - Added support for specifying 4-digit years to timelocal.
+       Thanks to Vytautas Mickevicius for the bug report.
+     - Added support for the 2-digit year "rolling window" to syncrhonize
+       functionality with Time::Local::timelocal.  Algorithm adapted from
+       Time::Local.
+     - Added localtime and gmtime to functions exported by default since
+       it makes sense for localtime to be in sync with timelocal.
+
 0.41  Wed Nov 05 22:00:00 2003 EST
 
      - Added support for dates up to 2098.

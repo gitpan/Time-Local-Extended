@@ -7,4 +7,5 @@ MANIFEST.SKIP
 Makefile.PL
 README
 bin/example.pl
-t/all_tests.t
+t/export_tests.t
+t/function_tests.t
