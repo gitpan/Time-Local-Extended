@@ -1,5 +1,18 @@
 Revision history for Perl extension Time::Local::Extended.
 
+0.50  Oct 18, 2008
+
+      Schwernifications:
+
+      New Features
+      * Now accurate beyond 2090 and before 1900.
+
+      Bug Fixes
+      * localtime() and timelocal() are now more accurate about DST changes.
+
+      Misc
+      * Now using the y2038 project
+
 0.48  Mon Jun 28 22:30:00 2004 EDT
 
      - Fixed skip() in tests to agree with number of planned tests.

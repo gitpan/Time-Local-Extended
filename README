@@ -1,5 +1,5 @@
 NAME
-    Time::Local::Extended - Extends 2038 barrier to 2098.
+    Time::Local::Extended - Increase the range of localtime and timelocal
 
 SYNOPSIS
       use Time::Local::Extended qw(:ALL);
@@ -13,73 +13,83 @@ SYNOPSIS
 
       my $sql = qq(
              SELECT start_time
-             FROM   projects
-             WHERE  project_id = '1'
+             FROM   project
+             WHERE  id = 1
       );
       my $date_time = $dbh->selectrow_array($sql); # '2097-07-04 12:34:56'
       my $ux_time   = UNIX_TIMESTAMP($date_time);  # 4023794096
 
       my $date_time = FROM_UNIXTIME(2**31);
       my $sql  = qq(
-             UPDATE projects
-             SET    start_time = '$date_time'
-             WHERE  project_id = '1'
+             UPDATE project
+             SET    start_time = ?
+             WHERE  id = 1
       );
+      $dbh->do($sql, undef, $date_time);
 
 DESCRIPTION
-    This module extends the 2038 date boundary to 2098. In conventional date
-    manipulation using CORE::localtime and Time::Local::timelocal, you
-    cannot use dates later than 2038. This module allows you to use dates as
-    far out as 2098, giving you sixty more years to postpone the problem.
+    This module extends the date range of localtime(), gmtime(), timegm()
+    and timelocal() to go safely beyond 2038 and before 1970 on any
+    operating system.
 
-PUBLIC METHODS
-    * timelocal
-        Invoked in the same way as Time::Local::timelocal, but supports
-        dates up to Jan 1, 2098.
+    It also provides a handful of useful time conversion functions.
 
-    * localtime
-        Invoked in the same way as CORE::localtime, but supports dates up to
-        Jan 18, 2098.
+PUBLIC FUNCTIONS
+    *   timelocal
 
-    * timegm
-        Invoked in the same way as Time::Local::timegm, but supports dates
-        up to Jan 1, 2098.
+        Invoked in the same way as Time::Local::timelocal().
 
-    * gmtime
-        Invoked in the same way as CORE::gmtime, but supports dates up to
-        Jan 18, 2098.
+    *   localtime
 
-    * UNIX_TIMESTAMP
-        Invoked similarly to the MySQL UNIX_TIMESTAMP() function, but
-        supports dates up to Jan 1, 2098.
+        Invoked in the same way as CORE::localtime().
 
-    * FROM_UNIXTIME
-        Invoked similarly to the MySQL FROM_UNIXTIME() function, but
-        supports dates up to Jan 18, 2098.
+    *   timegm
+
+        Invoked in the same way as Time::Local::timegm().
+
+    *   gmtime
+
+        Invoked in the same way as CORE::gmtime().
+
+    *   UNIX_TIMESTAMP
+
+        Invoked similarly to the MySQL UNIX_TIMESTAMP() function()
+
+    *   FROM_UNIXTIME
+
+        Invoked similarly to the MySQL FROM_UNIXTIME() function()
+
+LIMITATIONS
+    Because of the way timegm() and timelocal() try to Do What You Mean with
+    the year, it is impossible to feed it the years 0 through 99 (it thinks
+    you mean 2000 - 2099).
+
+    While the code can in theory go out to 2**63, the practical portable
+    limit of this code is from 2**52 to -2**52 (the limit of double floating
+    point precision) after which precision starts to drop off. This gives
+    you a range of about +/- 142 million years.
 
 BUGS
     Please e-mail bug reports or suggestions to bobo@cpan.org. Thanks!
 
-TODO
-      1) Trap Time::Local::timelocal die in an eval {}.
-      2) Add support for timelocal_nocheck and timegm_nocheck.
-      3) Add tests for time zones other than Eastern.
-      4) Clean up.  Lots of clean up.
-
 CREDITS
-    Thanks to Peter Kioko <ceph@techie.com> for helping to refine the idea.
-    Thanks to Adam Foxson <afoxson@pobox.com> for quality assurance and for
-    being the Human CPAN Reference Manual.
+    Thanks to Michael Schwern for extending this module's capabilities
+    beyond 2098.
+
+    Thanks to Peter Kioko for helping to refine the idea, and Adam Foxson,
+    the Human CPAN Reference Manual, for quality assurance.
 
 AUTHOR
     Bob O'Neill, <bobo@cpan.org>
 
 COPYRIGHT AND LICENSE
-    Copyright (C) 2003-2004 Bob O'Neill. All rights reserved.
+    Copyright (C) 2003-2008 Bob O'Neill and Michael Schwern. All rights
+    reserved.
 
     See COPYING for license
 
 SEE ALSO
-    * perl.
-    * Time::Local.
+    *   perl.
+
+    *   Time::Local.
 
