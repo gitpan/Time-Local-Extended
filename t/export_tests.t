@@ -1,5 +1,7 @@
-use Test;
-BEGIN { plan tests => 4 };
+#!/usr/bin/perl -w
+
+use Test::More;
+
 use strict;
 use Time::Local::Extended;
 
@@ -9,6 +11,7 @@ local $^W = 1; # warnings on, compatible with old Perls
 # are exported by default.
 
 # SETUP
+local $ENV{TZ} = "US/Eastern";
 my $localtime    = Time::Local::timelocal(0,0,0,3,10,103);
 my $gmtime       = Time::Local::timegm(0,0,0,3,10,103);
 my $gmt_diff     = ($gmtime - $localtime) / 3600;
@@ -17,15 +20,13 @@ my $gmt_offset   = $gmt_diff * 3600;
 my $new_last_timelocal = 4039390799; # End of Year 2098
 my $new_last_timegm    = $new_last_timelocal + $gmt_offset;
 
-if ($eastern_diff)
-{
-    warn "No tests for your time zone (yet).\n";
-    for (1..4)
-    {
-        skip(1, 1);
-    }
-    exit;
+if ($eastern_diff) {
+    plan skip_all => "Tests require eastern time zone";
 }
+else {
+    plan tests => 4;
+}
+
 
 # TEST
 ok (timelocal(59,59,23,31,11,197)  == $new_last_timelocal);

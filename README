@@ -70,6 +70,8 @@ LIMITATIONS
     you a range of about +/- 142 million years.
 
 BUGS
+    Doesn't correctly handle British Summer Time 1968-1971
+
     Please e-mail bug reports or suggestions to bobo@cpan.org. Thanks!
 
 CREDITS

@@ -11,7 +11,7 @@ use Time::Local qw();
 @EXPORT      = qw(timelocal localtime timegm gmtime);
 @EXPORT_OK   = qw(UNIX_TIMESTAMP FROM_UNIXTIME);
 %EXPORT_TAGS = (ALL => [@EXPORT, @EXPORT_OK]);
-$VERSION     = '0.50';
+$VERSION     = '0.51';
 local $^W    = 1;
 
 bootstrap Time::Local::Extended $VERSION;
@@ -102,7 +102,7 @@ sub seconds_between {
         $safe += $increment;
     }
 
-    return $seconds * $increment;
+    return $seconds * $increment + 0; # We prefer 0 to -0.
 }
 
 
@@ -320,6 +320,8 @@ floating point precision) after which precision starts to drop off.
 This gives you a range of about +/- 142 million years.
 
 =head1 BUGS
+
+Doesn't correctly handle British Summer Time 1968-1971
 
 Please e-mail bug reports or suggestions to bobo@cpan.org.  Thanks!
 
